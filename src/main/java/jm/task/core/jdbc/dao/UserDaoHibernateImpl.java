@@ -20,13 +20,13 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void createUsersTable() {
         SessionFactory factory = Util.createSessionFactory();
-        String sql = "CREATE TABLE IF NOT EXISTS users (ID Bigint NOT NULL AUTO_INCREMENT, NAME varchar (255), LASTNAME varchar (255), AGE int (3), PRIMARY KEY (ID))";
-
         try {
-
             session = factory.getCurrentSession();
             session.beginTransaction();
-            session.createSQLQuery(sql).addEntity(User.class).executeUpdate();
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS users (ID Bigint NOT NULL AUTO_INCREMENT," +
+                    " NAME varchar (255), LASTNAME varchar (255), AGE int (3), PRIMARY KEY (ID))")
+                    .addEntity(User.class)
+                    .executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -41,7 +41,8 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             session = factory.getCurrentSession();
             session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS users")
+                    .executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -74,7 +75,8 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             session = factory.getCurrentSession();
             session.beginTransaction();
-            session.createQuery("delete User where id = " + id).executeUpdate();
+            session.createQuery("delete User where id = " + id)
+                    .executeUpdate();
 
             session.getTransaction().commit();
         } catch (HibernateException e) {
